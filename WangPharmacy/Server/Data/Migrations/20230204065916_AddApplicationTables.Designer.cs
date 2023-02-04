@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WangPharmacy.Server.Data;
 
 namespace WangPharmacy.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230204065916_AddApplicationTables")]
+    partial class AddApplicationTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -396,8 +398,8 @@ namespace WangPharmacy.Server.Data.Migrations
                     b.Property<string>("MedicineName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("MedicinePrice")
-                        .HasColumnType("float");
+                    b.Property<float>("MedicinePrice")
+                        .HasColumnType("real");
 
                     b.Property<string>("MedicineType")
                         .HasColumnType("nvarchar(max)");
@@ -405,24 +407,6 @@ namespace WangPharmacy.Server.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Medicines");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            MedicineDescription = "To treat fever",
-                            MedicineName = "panadol",
-                            MedicinePrice = 2.23,
-                            MedicineType = "general"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            MedicineDescription = "To gain muscle",
-                            MedicineName = "protein",
-                            MedicinePrice = 223.22999999999999,
-                            MedicineType = "gym"
-                        });
                 });
 
             modelBuilder.Entity("WangPharmacy.Shared.Domain.Order", b =>
