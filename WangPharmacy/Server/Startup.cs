@@ -9,7 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using WangPharmacy.Server.Data;
+using WangPharmacy.Server.IRepository;
 using WangPharmacy.Server.Models;
+using WangPharmacy.Server.Repository;
 
 namespace WangPharmacy.Server
 {
@@ -29,7 +31,7 @@ namespace WangPharmacy.Server
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
