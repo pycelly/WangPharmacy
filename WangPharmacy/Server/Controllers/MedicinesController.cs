@@ -1,41 +1,49 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WangPharmacy.Server.IRepository;
-using WangPharmacy.Server.Repository;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using WangPharmacy.Server.Data;
 using WangPharmacy.Shared.Domain;
 
 namespace WangPharmacy.Server.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class MedicinesController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ApplicationDbContext _context;
 
-        public MedicinesController(IUnitOfWork unitOfWork)
+        public MedicinesController(ApplicationDbContext context)
         {
-            _unitOfWork = unitOfWork;
+            _context = context;
         }
+
+        // GET: api/Medicines
         [HttpGet]
-        public async Task<IActionResult> GetMedicines()
+        public async Task<ActionResult<IEnumerable<Medicine>>> GetMedicines()
         {
-            var medicines = await _unitOfWork.Medicines.GetAll();
-            return Ok(medicines);
+            return await _context.Medicines.ToListAsync();
         }
 
+        // GET: api/Medicines/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMedicine(int id)
+        public async Task<ActionResult<Medicine>> GetMedicine(int id)
         {
-            var medicine = await _unitOfWork.Medicines.Get(q => q.Id == id);
+            var medicine = await _context.Medicines.FindAsync(id);
 
             if (medicine == null)
             {
                 return NotFound();
             }
-            return Ok(medicine);
+
+            return medicine;
         }
+
+        // PUT: api/Medicines/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMedicine(int id, Medicine medicine)
         {
@@ -43,15 +51,16 @@ namespace WangPharmacy.Server.Controllers
             {
                 return BadRequest();
             }
-            _unitOfWork.Medicines.Update(medicine);
+
+            _context.Entry(medicine).State = EntityState.Modified;
 
             try
             {
-                await _unitOfWork.Save(HttpContext);
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await MedicineExists(id))
+                if (!MedicineExists(id))
                 {
                     return NotFound();
                 }
@@ -59,37 +68,41 @@ namespace WangPharmacy.Server.Controllers
                 {
                     throw;
                 }
-
             }
+
             return NoContent();
         }
+
+        // POST: api/Medicines
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Medicine>> PostMedicine(Medicine medicine)
         {
-            await _unitOfWork.Medicines.Insert(medicine);
-            await _unitOfWork.Save(HttpContext);
+            _context.Medicines.Add(medicine);
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetMedicine", new { id = medicine.Id }, medicine);
         }
+
+        // DELETE: api/Medicines/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMedicine(int id)
         {
-            var medicine = await _unitOfWork.Medicines.Get(q => q.Id == id);
+            var medicine = await _context.Medicines.FindAsync(id);
             if (medicine == null)
             {
                 return NotFound();
             }
 
-            await _unitOfWork.Medicines.Delete(id);
-            await _unitOfWork.Save(HttpContext);
+            _context.Medicines.Remove(medicine);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
-        private async Task<bool> MedicineExists(int id)
-        {
-            var medicine = await _unitOfWork.Medicines.Get(q => q.Id == id);
-            return medicine != null;
-        }
 
+        private bool MedicineExists(int id)
+        {
+            return _context.Medicines.Any(e => e.Id == id);
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace WangPharmacy.Shared.Domain
         public virtual Medicine Medicine { get; set; }
         public int PrescriptionId { get; set; }
         public virtual Prescription Prescription { get; set; }
+        public virtual OrderItem OrderItem { get; set; }
 
     }
 }

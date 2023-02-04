@@ -1,0 +1,59 @@
+﻿@page "/medicines/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+<h3 class=" card-title">Medicines</h3>
+@if (Medicines == null)
+            {
+                <div class="alert alert-info">Loading Medicines</div>
+            }
+ else
+            {
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var medicine in Medicines)
+                {
+                    <tr>
+                        <td>@medicine.MedicineName</td>
+                        <td>
+                            <a href="/medicines/view/@medicine.Id" class="btn btn-primary">
+                                <span class="oi oi-book"></span>
+                            </a>
+                            <a href="/medicines/edit/@medicine.Id" class="btn btn-warning">
+                                <span class="oi oi-pencil"></span>
+                            </a>
+                            <button class="btn btn-danger" @onclick="@(() =>Delete(medicine.Id))">
+                                <span class="oi oi-delete"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                    </tbody>
+                </table>
+            }
+
+@code {
+    private List<Medicine> Medicines;
+    protected async override  Task OnInitializedAsync()
+    {
+        Medicines = await _client.GetFromJsonAsync<List<Medicine>>($"{Endpoints.MedicinesEndpoint}");
+    }
+
+    async Task Delete(int medicineId)
+    {
+        var medicine = Medicines.First(q => q.Id == medicineId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {medicine.MedicineName}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.MedicinesEndpoint}/{medicineId}");
+            await OnInitializedAsync();
+        }
+    }
+}
