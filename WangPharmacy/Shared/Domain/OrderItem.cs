@@ -10,7 +10,7 @@ namespace WangPharmacy.Shared.Domain
     {
         public int OrderQuantity { get; set; }
         public int OrderId { get; set; }
-        public virtual Order order { get; set; }
+        public virtual Order Order { get; set; }
         public int MedicineId { get; set; }
         public virtual Medicine Medicine { get; set; }
     }

@@ -1,56 +1,69 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using WangPharmacy.Server.Data;
+using WangPharmacy.Shared.Domain;
 using WangPharmacy.Server.IRepository;
 using WangPharmacy.Server.Repository;
-using WangPharmacy.Shared.Domain;
 
 namespace WangPharmacy.Server.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class OrderItemsController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitofwork;
 
-        public OrderItemsController(IUnitOfWork unitOfWork)
+        public OrderItemsController(IUnitOfWork unitofwork)
         {
-            _unitOfWork = unitOfWork;
+            _unitofwork = unitofwork;
         }
+
+        // GET: api/OrderItems
         [HttpGet]
         public async Task<IActionResult> GetOrderItems()
         {
-            var orderItems = await _unitOfWork.OrderItems.GetAll();
+            var orderItems = await _unitofwork.OrderItems.GetAll(includes: q => q.Include(x => x.Order).Include(x => x.Medicine));
             return Ok(orderItems);
         }
 
+        // GET: api/OrderItems/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrderItem(int id)
         {
-            var orderItem = await _unitOfWork.OrderItems.Get(q => q.Id == id);
-
-            if (orderItem == null)
+            var orderItems = await _unitofwork.OrderItems.Get(q => q.Id == id);
+            if (orderItems == null)
             {
                 return NotFound();
             }
-            return Ok(orderItem);
+
+            return Ok(orderItems);
         }
+
+        // PUT: api/OrderItems/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrderItem(int id, OrderItem orderItem)
+        public async Task<IActionResult> PutOrderItem(int id, OrderItem orderItems)
         {
-            if (id != orderItem.Id)
+            if (id != orderItems.Id)
             {
                 return BadRequest();
             }
-            _unitOfWork.OrderItems.Update(orderItem);
+
+            _unitofwork.OrderItems.Update(orderItems);
 
             try
             {
-                await _unitOfWork.Save(HttpContext);
+                await _unitofwork.Save(HttpContext);
             }
+
             catch (DbUpdateConcurrencyException)
             {
+
                 if (!await OrderItemExists(id))
                 {
                     return NotFound();
@@ -59,37 +72,42 @@ namespace WangPharmacy.Server.Controllers
                 {
                     throw;
                 }
-
             }
+
             return NoContent();
         }
-        [HttpPost]
-        public async Task<ActionResult<OrderItem>> PostOrderItem(OrderItem orderItem)
-        {
-            await _unitOfWork.OrderItems.Insert(orderItem);
-            await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetOrderItem", new { id = orderItem.Id }, orderItem);
+        // POST: api/OrderItems
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<OrderItem>> PostOrderItem(OrderItem orderItems)
+        {
+            await _unitofwork.OrderItems.Insert(orderItems);
+            await _unitofwork.Save(HttpContext);
+
+            return CreatedAtAction("GetOrderItem", new { id = orderItems.Id }, orderItems);
         }
+
+        // DELETE: api/OrderItems/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrderItem(int id)
         {
-            var orderItem = await _unitOfWork.OrderItems.Get(q => q.Id == id);
+            var orderItem = await _unitofwork.OrderItems.Get(q => q.Id == id);
             if (orderItem == null)
             {
                 return NotFound();
             }
 
-            await _unitOfWork.OrderItems.Delete(id);
-            await _unitOfWork.Save(HttpContext);
+            await _unitofwork.OrderItems.Delete(id);
+            await _unitofwork.Save(HttpContext);
 
             return NoContent();
         }
+
         private async Task<bool> OrderItemExists(int id)
         {
-            var orderItem = await _unitOfWork.OrderItems.Get(q => q.Id == id);
+            var orderItem = await _unitofwork.Staffs.Get(q => q.Id == id);
             return orderItem != null;
         }
-
     }
 }

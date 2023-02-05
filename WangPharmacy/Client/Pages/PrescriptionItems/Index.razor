@@ -1,0 +1,64 @@
+﻿@page "/prescriptionItems/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+<h3 class=" card-title">PrescriptionItems</h3>
+@if (PrescriptionItems == null)
+{
+    <div class="alert alert-info">Loading PrescriptionItems</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>PrescriptionItem Id</th>
+                <th>PrescriptionItem Qty</th>
+                <th>Medicine</th>
+                <th>Prescription</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var prescriptionItem in PrescriptionItems)
+            {
+            <tr>
+                <td>@prescriptionItem.Id</td>
+                <td>@prescriptionItem.PrescriptionQuantity</td>
+                <td>@prescriptionItem.Medicine.Id</td>
+                <td>@prescriptionItem.Prescription.Id</td>
+                <td>
+                    <a href="/PrescriptionItems/view/@prescriptionItem.Id" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                    <a href="/PrescriptionItems/edit/@prescriptionItem.Id" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
+                    <button class="btn btn-danger" @onclick="@(() =>Delete(prescriptionItem.Id))">
+                        <span class="oi oi-delete"></span>
+                    </button>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<PrescriptionItem> PrescriptionItems;
+    protected async override Task OnInitializedAsync()
+    {
+        PrescriptionItems = await _client.GetFromJsonAsync<List<PrescriptionItem>>($"{Endpoints.PrescriptionItemsEndpoint}");
+    }
+
+    async Task Delete(int prescriptionItemId)
+    {
+        var prescriptionItem = PrescriptionItems.First(q => q.Id == prescriptionItemId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {prescriptionItem.Id}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.PrescriptionItemsEndpoint}/{prescriptionItemId}");
+            await OnInitializedAsync();
+        }
+    }
+}
