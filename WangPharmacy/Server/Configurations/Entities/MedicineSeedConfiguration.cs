@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WangPharmacy.Shared.Domain;
 
-namespace WangPharmacy.Server.Configurations.Entities.Entities
+namespace WangPharmacy.Server.Configurations.Entities
 {
     public class MedicineSeedConfiguration : IEntityTypeConfiguration<Medicine>
     {
@@ -26,6 +26,15 @@ namespace WangPharmacy.Server.Configurations.Entities.Entities
                 {
                     Id = 2,
                     MedicineName = "protein",
+                    MedicineType = "gym",
+                    MedicineDescription = "To gain muscle",
+                    MedicinePrice = 223.23
+
+                },
+                new Medicine
+                {
+                Id = 3,
+                    MedicineName = "protein1",
                     MedicineType = "gym",
                     MedicineDescription = "To gain muscle",
                     MedicinePrice = 223.23

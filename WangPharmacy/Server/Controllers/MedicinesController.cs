@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WangPharmacy.Server.Data;
 using WangPharmacy.Shared.Domain;
+using WangPharmacy.Server.IRepository;
+using WangPharmacy.Server.Repository;
 
 namespace WangPharmacy.Server.Controllers
 {
@@ -14,32 +16,32 @@ namespace WangPharmacy.Server.Controllers
     [ApiController]
     public class MedicinesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitofwork;
 
-        public MedicinesController(ApplicationDbContext context)
+        public MedicinesController(IUnitOfWork unitofwork)
         {
-            _context = context;
+            _unitofwork = unitofwork;
         }
 
         // GET: api/Medicines
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Medicine>>> GetMedicines()
+        public async Task<IActionResult> GetMedicines()
         {
-            return await _context.Medicines.ToListAsync();
+            var medicines = await _unitofwork.Medicines.GetAll();
+            return Ok(medicines);
         }
 
         // GET: api/Medicines/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Medicine>> GetMedicine(int id)
+        public async Task<IActionResult> GetMedicine(int id)
         {
-            var medicine = await _context.Medicines.FindAsync(id);
-
-            if (medicine == null)
+            var medicine = await _unitofwork.Medicines.Get(q => q.Id == id); 
+            if (medicine == null)               
             {
                 return NotFound();
             }
 
-            return medicine;
+            return Ok(medicine);
         }
 
         // PUT: api/Medicines/5
@@ -52,15 +54,17 @@ namespace WangPharmacy.Server.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(medicine).State = EntityState.Modified;
+            _unitofwork.Medicines.Update(medicine);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _unitofwork.Save(HttpContext);
             }
+
             catch (DbUpdateConcurrencyException)
             {
-                if (!MedicineExists(id))
+
+                if (!await MedicineExists(id))
                 {
                     return NotFound();
                 }
@@ -78,8 +82,8 @@ namespace WangPharmacy.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Medicine>> PostMedicine(Medicine medicine)
         {
-            _context.Medicines.Add(medicine);
-            await _context.SaveChangesAsync();
+            await _unitofwork.Medicines.Insert(medicine);
+            await _unitofwork.Save(HttpContext);
 
             return CreatedAtAction("GetMedicine", new { id = medicine.Id }, medicine);
         }
@@ -88,21 +92,22 @@ namespace WangPharmacy.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMedicine(int id)
         {
-            var medicine = await _context.Medicines.FindAsync(id);
+            var medicine = await _unitofwork.Medicines.Get(q => q.Id == id);
             if (medicine == null)
             {
                 return NotFound();
             }
 
-            _context.Medicines.Remove(medicine);
-            await _context.SaveChangesAsync();
+           await _unitofwork.Medicines.Delete(id);
+            await _unitofwork.Save(HttpContext);
 
             return NoContent();
         }
 
-        private bool MedicineExists(int id)
+        private async Task<bool> MedicineExists(int id)
         {
-            return _context.Medicines.Any(e => e.Id == id);
+            var medicine = await _unitofwork.Staffs.Get(q => q.Id == id);
+            return medicine != null;
         }
     }
 }

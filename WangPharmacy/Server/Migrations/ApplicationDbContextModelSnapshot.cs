@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WangPharmacy.Server.Data;
 
-namespace WangPharmacy.Server.Data.Migrations
+namespace WangPharmacy.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230204065916_AddApplicationTables")]
-    partial class AddApplicationTables
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -398,8 +396,8 @@ namespace WangPharmacy.Server.Data.Migrations
                     b.Property<string>("MedicineName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("MedicinePrice")
-                        .HasColumnType("real");
+                    b.Property<double>("MedicinePrice")
+                        .HasColumnType("float");
 
                     b.Property<string>("MedicineType")
                         .HasColumnType("nvarchar(max)");
@@ -407,6 +405,32 @@ namespace WangPharmacy.Server.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Medicines");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            MedicineDescription = "To treat fever",
+                            MedicineName = "panadol",
+                            MedicinePrice = 2.23,
+                            MedicineType = "general"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            MedicineDescription = "To gain muscle",
+                            MedicineName = "protein",
+                            MedicinePrice = 223.22999999999999,
+                            MedicineType = "gym"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            MedicineDescription = "To gain muscle",
+                            MedicineName = "protein1",
+                            MedicinePrice = 223.22999999999999,
+                            MedicineType = "gym"
+                        });
                 });
 
             modelBuilder.Entity("WangPharmacy.Shared.Domain.Order", b =>
@@ -490,6 +514,9 @@ namespace WangPharmacy.Server.Data.Migrations
                     b.Property<int>("MedicineId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("OrderItemId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PrescriptionId")
                         .HasColumnType("int");
 
@@ -499,6 +526,8 @@ namespace WangPharmacy.Server.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MedicineId");
+
+                    b.HasIndex("OrderItemId");
 
                     b.HasIndex("PrescriptionId");
 
@@ -527,6 +556,24 @@ namespace WangPharmacy.Server.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Staffs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            StaffContact = 1234456,
+                            StaffEmail = "123@123.com",
+                            StaffGender = "male",
+                            StaffName = "tr"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            StaffContact = 12314456,
+                            StaffEmail = "1213@123.com",
+                            StaffGender = "male",
+                            StaffName = "tr1"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -648,6 +695,10 @@ namespace WangPharmacy.Server.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WangPharmacy.Shared.Domain.OrderItem", "OrderItem")
+                        .WithMany()
+                        .HasForeignKey("OrderItemId");
+
                     b.HasOne("WangPharmacy.Shared.Domain.Prescription", "Prescription")
                         .WithMany("PrescriptionItem")
                         .HasForeignKey("PrescriptionId")
@@ -655,6 +706,8 @@ namespace WangPharmacy.Server.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Medicine");
+
+                    b.Navigation("OrderItem");
 
                     b.Navigation("Prescription");
                 });

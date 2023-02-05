@@ -6,7 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WangPharmacy.Server.Configurations.Entities.Entities;
+using WangPharmacy.Server.Configurations.Entities;
+
 using WangPharmacy.Server.Models;
 using WangPharmacy.Shared.Domain;
 
@@ -34,6 +35,7 @@ namespace WangPharmacy.Server.Data
             base.OnModelCreating(builder);
 
             builder.ApplyConfiguration(new MedicineSeedConfiguration());
+            builder.ApplyConfiguration(new StaffSeedConfiguration());
         }
 
     }
