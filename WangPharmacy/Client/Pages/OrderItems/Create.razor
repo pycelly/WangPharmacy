@@ -1,0 +1,72 @@
+﻿@page "/orderItems/create/"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New OrderItem</h3>
+<hr />
+<br />
+
+<EditForm Model="@orderItem" OnValidSubmit="CreateOrderItem">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Order: </label>
+        <div>
+            <InputSelect @bind-Value="orderItem.OrderId" class="form-control">
+                <option value="">-- Select Order --</option>
+                @if (Orders != null)
+                {
+                    foreach (var order in Orders)
+                    {
+<option value="@order.Id">@order.Id</option>}
+}
+            </InputSelect>
+            <ValidationMessage For="@(() => orderItem.OrderId)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Medicine: </label>
+        <div>
+            <InputSelect @bind-Value="orderItem.MedicineId" class="form-control">
+                <option value="">-- Select Medicine --</option>
+                @if (Medicines != null)
+                {
+                    foreach (var medicine in Medicines)
+                    {
+<option value="@medicine.Id">@medicine.MedicineName</option>}
+}
+            </InputSelect>
+            <ValidationMessage For="@(() => orderItem.MedicineId)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>OrderItem quantity: </label>
+        <div>
+            <InputDate @bind-Value="@orderItem.OrderQuantity" class="form-control" />
+            <ValidationMessage For="@(() => orderItem.OrderQuantity)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create OrderItem
+    </button>
+</EditForm>
+
+@code { OrderItem orderItem = new OrderItem();
+
+    private IList<Order> Orders;
+    private IList<Medicine> Medicines;
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        Orders = await _client.GetFromJsonAsync<List<Order>>($"{Endpoints.OrdersEndpoint}");
+        Medicines = await _client.GetFromJsonAsync<List<Medicine>>($"{Endpoints.MedicinesEndpoint}");
+    }
+
+    private async Task CreateOrderItem()
+    {
+        await _client.PostAsJsonAsync(Endpoints.OrderItemsEndpoint, orderItem);
+        _navManager.NavigateTo("/orderItems/");
+    } }

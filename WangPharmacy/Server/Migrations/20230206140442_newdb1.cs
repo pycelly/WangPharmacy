@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WangPharmacy.Server.Migrations
 {
-    public partial class newdb : Migration
+    public partial class newdb1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,7 +56,7 @@ namespace WangPharmacy.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CustomerGender = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerContact = table.Column<int>(type: "int", nullable: false),
+                    CustomerContact = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CustomerDOB = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CustomerAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CustomerEmail = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -129,7 +129,7 @@ namespace WangPharmacy.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StaffName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StaffGender = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StaffContact = table.Column<int>(type: "int", nullable: false),
+                    StaffContact = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StaffEmail = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -388,8 +388,8 @@ namespace WangPharmacy.Server.Migrations
                 columns: new[] { "Id", "StaffContact", "StaffEmail", "StaffGender", "StaffName" },
                 values: new object[,]
                 {
-                    { 1, 1234456, "123@123.com", "male", "tr" },
-                    { 2, 12314456, "1213@123.com", "male", "tr1" }
+                    { 1, "12312", "123@123.com", "male", "tr" },
+                    { 2, "2131232", "1213@123.com", "male", "tr1" }
                 });
 
             migrationBuilder.CreateIndex(

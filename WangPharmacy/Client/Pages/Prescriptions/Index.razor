@@ -4,6 +4,12 @@
 @attribute [Authorize]
 
 <h3 class=" card-title">Prescriptions</h3>
+<a href="/prescriptions/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New prescriptions
+</a>
+<br />
+<br />
 @if (Prescriptions == null)
 {
     <div class="alert alert-info">Loading Prescriptions</div>
@@ -15,7 +21,8 @@ else
             <tr>
                 <th>Prescription Id</th>
                 <th>Prescription Description</th>
-                <th>Appointment</th>             
+                <th>Appointment</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +31,7 @@ else
                 <tr>
                     <td>@prescription.Id</td>
                     <td>@prescription.PrescriptionDescription</td>
-                    <td>@prescription.Appointment.Id</td>                    
+                    <td>@prescription.Appointment.Id</td>
                     <td>
                         <a href="/Prescriptions/view/@prescription.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>

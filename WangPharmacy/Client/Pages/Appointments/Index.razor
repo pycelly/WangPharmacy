@@ -3,7 +3,15 @@
 @inject IJSRuntime js
 @attribute [Authorize]
 
-<h3 class=" card-title">Appointments</h3>
+<h3 class="card-title">Appointments</h3>
+<a href="/appointments/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New 
+</a>
+<br />
+<br />
+
+
 @if (Appointments == null)
 {
     <div class="alert alert-info">Loading Appointments</div>
@@ -23,23 +31,23 @@ else
         <tbody>
             @foreach (var appointment in Appointments)
             {
-            <tr>
-                <td>@appointment.Id</td>
-                <td>@appointment.AppointmentDateTime.Date.ToString("dd MMMM yyyy")</td>
-                <td>@appointment.Staff.StaffName</td>
-                <td>@appointment.Customer.CustomerName</td>
-                <td>
-                    <a href="/Appointments/view/@appointment.Id" class="btn btn-primary">
-                        <span class="oi oi-book"></span>
-                    </a>
-                    <a href="/Appointments/edit/@appointment.Id" class="btn btn-warning">
-                        <span class="oi oi-pencil"></span>
-                    </a>
-                    <button class="btn btn-danger" @onclick="@(() =>Delete(appointment.Id))">
-                        <span class="oi oi-delete"></span>
-                    </button>
-                </td>
-            </tr>
+                <tr>
+                    <td>@appointment.Id</td>
+                    <td>@appointment.AppointmentDateTime.Date.ToString("dd MMMM yyyy")</td>
+                    <td>@appointment.Staff.StaffName</td>
+                    <td>@appointment.Customer.CustomerName</td>
+                    <td>
+                        <a href="/Appointments/view/@appointment.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/Appointments/edit/@appointment.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(() =>Delete(appointment.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

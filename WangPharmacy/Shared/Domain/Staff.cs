@@ -10,7 +10,7 @@ namespace WangPharmacy.Shared.Domain
     {
         public String StaffName { get; set; }
         public String StaffGender { get; set; }
-        public int StaffContact { get; set; }
+        public String StaffContact { get; set; }
         public String StaffEmail { get; set; }
         public virtual List<Appointment> Appointment { get; set; }
     }

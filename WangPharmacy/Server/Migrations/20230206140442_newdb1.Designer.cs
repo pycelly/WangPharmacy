@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WangPharmacy.Server.Data;
 
 namespace WangPharmacy.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230206140442_newdb1")]
+    partial class newdb1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -381,28 +383,6 @@ namespace WangPharmacy.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CustomerAddress = "1321123",
-                            CustomerContact = "1234123213",
-                            CustomerDOB = "123/123/123",
-                            CustomerEmail = "123@123.com",
-                            CustomerGender = "male",
-                            CustomerName = "Wpy"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CustomerAddress = "1321123",
-                            CustomerContact = "12341123213",
-                            CustomerDOB = "1213/123/123",
-                            CustomerEmail = "123@123.com1",
-                            CustomerGender = "1male",
-                            CustomerName = "Wpy1"
-                        });
                 });
 
             modelBuilder.Entity("WangPharmacy.Shared.Domain.Medicine", b =>
@@ -452,14 +432,6 @@ namespace WangPharmacy.Server.Migrations
                             MedicineName = "protein1",
                             MedicinePrice = 223.22999999999999,
                             MedicineType = "gym"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            MedicineDescription = "To g2ain muscle",
-                            MedicineName = "protei1n1",
-                            MedicinePrice = 2223.23,
-                            MedicineType = "gy1m"
                         });
                 });
 

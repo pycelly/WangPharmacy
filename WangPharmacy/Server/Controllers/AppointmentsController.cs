@@ -27,34 +27,34 @@ namespace WangPharmacy.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAppointments()
         {
-            var Appointments = await _unitofwork.Appointments.GetAll(includes: q => q.Include(x => x.Customer).Include(x=>x.Staff));
-            return Ok(Appointments);
+            var appointments = await _unitofwork.Appointments.GetAll(includes: q => q.Include(x => x.Customer).Include( x=> x.Staff));
+            return Ok(appointments);
         }
 
         // GET: api/Appointments/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAppointment(int id)
         {
-            var Appointments = await _unitofwork.Appointments.Get(q => q.Id == id);
-            if (Appointments == null)
+            var appointments = await _unitofwork.Appointments.Get(q => q.Id == id);
+            if (appointments == null)
             {
                 return NotFound();
             }
 
-            return Ok(Appointments);
+            return Ok(appointments);
         }
 
         // PUT: api/Appointments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAppointment(int id, Appointment Appointment)
+        public async Task<IActionResult> PutAppointment(int id, Appointment appointment)
         {
-            if (id != Appointment.Id)
+            if (id != appointment.Id)
             {
                 return BadRequest();
             }
 
-            _unitofwork.Appointments.Update(Appointment);
+           _unitofwork.Appointments.Update(appointment);
 
             try
             {
@@ -92,8 +92,8 @@ namespace WangPharmacy.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAppointment(int id)
         {
-            var Appointment = await _unitofwork.Appointments.Get(q => q.Id == id);
-            if (Appointment == null)
+            var appointment = await _unitofwork.Appointments.Get(q => q.Id == id);
+            if (appointment == null)
             {
                 return NotFound();
             }
@@ -106,8 +106,8 @@ namespace WangPharmacy.Server.Controllers
 
         private async Task<bool> AppointmentExists(int id)
         {
-            var Appointment = await _unitofwork.Staffs.Get(q => q.Id == id);
-            return Appointment != null;
+            var appointment = await _unitofwork.Appointments.Get(q => q.Id == id);
+            return appointment != null;
         }
     }
 }

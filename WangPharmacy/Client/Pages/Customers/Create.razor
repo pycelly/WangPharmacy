@@ -1,0 +1,65 @@
+﻿@page "/customers/create/"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Customer</h3>
+<hr />
+<br />
+
+<EditForm Model="@customer" OnValidSubmit="CreateCustomer">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Name: </label>
+        <div>
+            <InputText @bind-Value="@customer.CustomerName" class="form-control" />
+            <ValidationMessage For="@(() => customer.CustomerName)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Customer Address: </label>
+        <div>
+            <InputText @bind-Value="@customer.CustomerAddress" class="form-control" />
+            <ValidationMessage For="@(() => customer.CustomerAddress)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Customer dob: </label>
+        <div>
+            <InputText @bind-Value="@customer.CustomerDOB" class="form-control" />
+            <ValidationMessage For="@(() => customer.CustomerDOB)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Customer contact: </label>
+        <div>
+            <InputText @bind-Value="@customer.CustomerContact" class="form-control" />
+            <ValidationMessage For="@(() => customer.CustomerContact)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Customer gender: </label>
+        <div>
+            <InputText @bind-Value="@customer.CustomerGender" class="form-control" />
+            <ValidationMessage For="@(() => customer.CustomerGender)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create Customer
+    </button>
+</EditForm>
+
+@code { Customer customer = new Customer();
+
+            private async Task CreateCustomer()
+            {
+                await _client.PostAsJsonAsync(Endpoints.CustomersEndpoint, customer);
+                _navManager.NavigateTo("/customers/");
+            } 
+    }

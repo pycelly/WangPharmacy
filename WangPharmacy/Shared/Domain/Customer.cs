@@ -10,7 +10,7 @@ namespace WangPharmacy.Shared.Domain
     {
         public String CustomerName { get; set; }
         public String CustomerGender { get; set; }
-        public int CustomerContact { get; set; }
+        public String CustomerContact { get; set; }
         public String CustomerDOB { get; set; }
         public String CustomerAddress { get; set; }
         public String CustomerEmail { get; set; }

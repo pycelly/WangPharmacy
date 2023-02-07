@@ -18,7 +18,7 @@ namespace WangPharmacy.Server.Configurations.Entities
                     Id = 1,
                     StaffName = "tr",
                     StaffGender = "male",
-                    StaffContact = 1234456,
+                    StaffContact = "12312",
                     StaffEmail = "123@123.com"
 
                 },
@@ -27,7 +27,7 @@ namespace WangPharmacy.Server.Configurations.Entities
                     Id = 2,
                     StaffName = "tr1",
                     StaffGender = "male",
-                    StaffContact = 12314456,
+                    StaffContact = "2131232",
                     StaffEmail = "1213@123.com"
 
                 }

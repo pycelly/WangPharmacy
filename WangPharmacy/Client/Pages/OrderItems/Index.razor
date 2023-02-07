@@ -4,6 +4,12 @@
 @attribute [Authorize]
 
 <h3 class=" card-title">OrderItems</h3>
+<a href="/orderItems/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New
+</a>
+<br />
+<br />
 @if (OrderItems == null)
 {
     <div class="alert alert-info">Loading OrderItems</div>
@@ -22,23 +28,23 @@ else
         <tbody>
             @foreach (var orderItem in OrderItems)
             {
-            <tr>
-                <td>@orderItem.Id</td>
-                <td>@orderItem.OrderQuantity</td>
-                <td>@orderItem.Order.Id</td>
-                <td>@orderItem.Medicine.MedicineName</td>
-                <td>
-                    <a href="/OrderItems/view/@orderItem.Id" class="btn btn-primary">
-                        <span class="oi oi-book"></span>
-                    </a>
-                    <a href="/OrderItems/edit/@orderItem.Id" class="btn btn-warning">
-                        <span class="oi oi-pencil"></span>
-                    </a>
-                    <button class="btn btn-danger" @onclick="@(() =>Delete(orderItem.Id))">
-                        <span class="oi oi-delete"></span>
-                    </button>
-                </td>
-            </tr>
+                <tr>
+                    <td>@orderItem.Id</td>
+                    <td>@orderItem.OrderQuantity</td>
+                    <td>@orderItem.Order.Id</td>
+                    <td>@orderItem.Medicine.MedicineName</td>
+                    <td>
+                        <a href="/OrderItems/view/@orderItem.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/OrderItems/edit/@orderItem.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(() =>Delete(orderItem.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

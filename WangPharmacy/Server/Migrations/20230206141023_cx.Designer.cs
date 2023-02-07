@@ -10,8 +10,8 @@ using WangPharmacy.Server.Data;
 namespace WangPharmacy.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230205061120_newdb")]
-    partial class newdb
+    [Migration("20230206141023_cx")]
+    partial class cx
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -365,8 +365,8 @@ namespace WangPharmacy.Server.Migrations
                     b.Property<string>("CustomerAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CustomerContact")
-                        .HasColumnType("int");
+                    b.Property<string>("CustomerContact")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerDOB")
                         .HasColumnType("nvarchar(max)");
@@ -383,6 +383,26 @@ namespace WangPharmacy.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CustomerContact = "1234123213",
+                            CustomerDOB = "123/123/123",
+                            CustomerEmail = "123@123.com",
+                            CustomerGender = "male",
+                            CustomerName = "Wpy"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CustomerContact = "12341123213",
+                            CustomerDOB = "1213/123/123",
+                            CustomerEmail = "123@123.com1",
+                            CustomerGender = "1male",
+                            CustomerName = "Wpy1"
+                        });
                 });
 
             modelBuilder.Entity("WangPharmacy.Shared.Domain.Medicine", b =>
@@ -543,8 +563,8 @@ namespace WangPharmacy.Server.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("StaffContact")
-                        .HasColumnType("int");
+                    b.Property<string>("StaffContact")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StaffEmail")
                         .HasColumnType("nvarchar(max)");
@@ -563,7 +583,7 @@ namespace WangPharmacy.Server.Migrations
                         new
                         {
                             Id = 1,
-                            StaffContact = 1234456,
+                            StaffContact = "12312",
                             StaffEmail = "123@123.com",
                             StaffGender = "male",
                             StaffName = "tr"
@@ -571,7 +591,7 @@ namespace WangPharmacy.Server.Migrations
                         new
                         {
                             Id = 2,
-                            StaffContact = 12314456,
+                            StaffContact = "2131232",
                             StaffEmail = "1213@123.com",
                             StaffGender = "male",
                             StaffName = "tr1"
@@ -667,7 +687,7 @@ namespace WangPharmacy.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WangPharmacy.Shared.Domain.Order", "order")
+                    b.HasOne("WangPharmacy.Shared.Domain.Order", "Order")
                         .WithMany("OrderItem")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -675,7 +695,7 @@ namespace WangPharmacy.Server.Migrations
 
                     b.Navigation("Medicine");
 
-                    b.Navigation("order");
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("WangPharmacy.Shared.Domain.Prescription", b =>

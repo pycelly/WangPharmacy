@@ -39,6 +39,15 @@ namespace WangPharmacy.Server.Configurations.Entities
                     MedicineDescription = "To gain muscle",
                     MedicinePrice = 223.23
 
+                },
+                new Medicine
+                {
+                    Id = 4,
+                    MedicineName = "protei1n1",
+                    MedicineType = "gy1m",
+                    MedicineDescription = "To g2ain muscle",
+                    MedicinePrice = 2223.23
+
                 }
                 );
             

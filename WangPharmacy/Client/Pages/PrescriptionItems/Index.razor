@@ -4,6 +4,12 @@
 @attribute [Authorize]
 
 <h3 class=" card-title">PrescriptionItems</h3>
+<a href="/prescriptionsItems/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New prescriptions
+</a>
+<br />
+<br />
 @if (PrescriptionItems == null)
 {
     <div class="alert alert-info">Loading PrescriptionItems</div>
@@ -22,23 +28,23 @@ else
         <tbody>
             @foreach (var prescriptionItem in PrescriptionItems)
             {
-            <tr>
-                <td>@prescriptionItem.Id</td>
-                <td>@prescriptionItem.PrescriptionQuantity</td>
-                <td>@prescriptionItem.Medicine.Id</td>
-                <td>@prescriptionItem.Prescription.Id</td>
-                <td>
-                    <a href="/PrescriptionItems/view/@prescriptionItem.Id" class="btn btn-primary">
-                        <span class="oi oi-book"></span>
-                    </a>
-                    <a href="/PrescriptionItems/edit/@prescriptionItem.Id" class="btn btn-warning">
-                        <span class="oi oi-pencil"></span>
-                    </a>
-                    <button class="btn btn-danger" @onclick="@(() =>Delete(prescriptionItem.Id))">
-                        <span class="oi oi-delete"></span>
-                    </button>
-                </td>
-            </tr>
+                <tr>
+                    <td>@prescriptionItem.Id</td>
+                    <td>@prescriptionItem.PrescriptionQuantity</td>
+                    <td>@prescriptionItem.Medicine.Id</td>
+                    <td>@prescriptionItem.Prescription.Id</td>
+                    <td>
+                        <a href="/PrescriptionItems/view/@prescriptionItem.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/PrescriptionItems/edit/@prescriptionItem.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(() =>Delete(prescriptionItem.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

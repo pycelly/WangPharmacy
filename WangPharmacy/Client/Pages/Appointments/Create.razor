@@ -1,0 +1,70 @@
+﻿@page "/appointments/create/"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Appointment</h3>
+<hr />
+<br />
+
+<EditForm Model="@appointment" OnValidSubmit="CreateAppointment">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Customer: </label>
+        <div>
+            <InputSelect @bind-Value="appointment.CustomerId" class="form-control">
+                <option value="">-- Select Customer --</option>
+                @if (Customers != null)
+                {
+                    foreach (var customer in Customers)
+                    {
+<option value="@customer.Id">@customer.CustomerName</option>}
+                    }
+            </InputSelect>
+            <ValidationMessage For="@(() => appointment.CustomerId)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Staff: </label>
+        <div>
+            <InputSelect @bind-Value="appointment.StaffId" class="form-control">
+                <option value="">-- Select Staff --</option>
+                @if (Staffs != null)
+                {
+                    foreach (var staff in Staffs)
+                    {
+<option value="@staff.Id">@staff.StaffName</option>}
+                    }
+            </InputSelect>
+            <ValidationMessage For="@(() => appointment.StaffId)" />
+        </div>
+    </div>
+
+
+
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create Appointment
+    </button>
+</EditForm>
+
+@code { Appointment appointment = new Appointment();
+
+            private IList<Customer> Customers;
+            private IList<Staff> Staffs;
+
+
+            protected async override Task OnInitializedAsync()
+            {
+                Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+                Staffs = await _client.GetFromJsonAsync<List<Staff>>($"{Endpoints.StaffsEndpoint}");
+
+            }
+
+            private async Task CreateAppointment()
+            {
+                await _client.PostAsJsonAsync(Endpoints.AppointmentsEndpoint, appointment);
+                _navManager.NavigateTo("/appointments/");
+            } }

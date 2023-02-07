@@ -1,0 +1,74 @@
+﻿@page "/prescriptionItems/create/"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New prescriptionItem</h3>
+<hr />
+<br />
+
+<EditForm Model="@prescriptionItem" OnValidSubmit="CreatePrescriptionItem">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Medicine: </label>
+        <div>
+            <InputSelect @bind-Value="prescriptionItem.MedicineId" class="form-control">
+                <option value="">-- Select Medicines --</option>
+                @if (Medicines != null)
+                {
+                    foreach (var medicine in Medicines)
+                    {
+<option value="@medicine.Id">@medicine.Id</option>}
+}
+            </InputSelect>
+            <ValidationMessage For="@(() => prescriptionItem.MedicineId)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Prescription: </label>
+        <div>
+            <InputSelect @bind-Value="prescriptionItem.PrescriptionId" class="form-control">
+                <option value="">-- Select Presciprtion --</option>
+                @if (Prescriptions != null)
+                {
+                    foreach (var prescription in Prescriptions)
+                    {
+<option value="@prescription.Id">@prescription.Id</option>}
+}
+            </InputSelect>
+            <ValidationMessage For="@(() => prescriptionItem.MedicineId)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>prescription qty: </label>
+        <div>
+            <InputNumber @bind-Value="@prescriptionItem.PrescriptionQuantity" class="form-control" />
+            <ValidationMessage For="@(() => prescriptionItem.PrescriptionQuantity)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create prescriptionItem
+    </button>
+</EditForm>
+
+@code { PrescriptionItem prescriptionItem = new PrescriptionItem();
+
+    private IList<Medicine> Medicines;
+    private IList<Prescription> Prescriptions;
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        Medicines = await _client.GetFromJsonAsync<List<Medicine>>($"{Endpoints.MedicinesEndpoint}");
+        Prescriptions = await _client.GetFromJsonAsync<List<Prescription>>($"{Endpoints.PrescriptionsEndpoint}");
+    }
+
+    private async Task CreatePrescriptionItem()
+    {
+        await _client.PostAsJsonAsync(Endpoints.PrescriptionItemsEndpoint, prescriptionItem);
+        _navManager.NavigateTo("/prescriptionItems/");
+    } }
