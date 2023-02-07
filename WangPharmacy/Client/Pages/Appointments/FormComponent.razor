@@ -1,12 +1,6 @@
-﻿@page "/appointments/create/"
-@inject HttpClient _client
-@inject NavigationManager _navManager
+﻿@inject HttpClient _client
 
-<h3 class="card-title">Create New Appointment</h3>
-<hr />
-<br />
-
-<EditForm Model="@appointment" OnValidSubmit="CreateAppointment">
+<EditForm Model="@appointment" OnValidSubmit="@OnVaildSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -51,26 +45,25 @@
 
 
 
+
     <button type="submit" class="btn btn-success btn-block">
-        Create Appointment
+        @ButtonText
     </button>
+    <BackToList Target="appointments" />
 </EditForm>
 
-@code { Appointment appointment = new Appointment();
+@code{ 
+    [Parameter] public Appointment appointment { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnVaildSubmit { get; set; }
 
-            private IList<Customer> Customers;
-            private IList<Staff> Staffs;
+    private IList<Customer> Customers;
+    private IList<Staff> Staffs;
 
+    protected async override Task OnInitializedAsync()
+    {
+        Staffs = await _client.GetFromJsonAsync<List<Staff>>($"{Endpoints.StaffsEndpoint}");
+        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+    }
 
-            protected async override Task OnInitializedAsync()
-            {
-                Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
-                Staffs = await _client.GetFromJsonAsync<List<Staff>>($"{Endpoints.StaffsEndpoint}");
-
-            }
-
-            private async Task CreateAppointment()
-            {
-                await _client.PostAsJsonAsync(Endpoints.AppointmentsEndpoint, appointment);
-                _navManager.NavigateTo("/appointments/");
-            } }
+    }

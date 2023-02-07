@@ -1,0 +1,64 @@
+﻿@inject HttpClient _client
+
+
+<EditForm Model="@orderItem" OnValidSubmit="@OnVaildSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Order: </label>
+        <div>
+            <InputSelect @bind-Value="orderItem.OrderId" class="form-control">
+                <option value="">-- Select Order --</option>
+                @if (Orders != null)
+                {
+                    foreach (var order in Orders)
+                    {
+                        <option value="@order.Id">@order.Id</option>}
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => orderItem.OrderId)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Medicine: </label>
+        <div>
+            <InputSelect @bind-Value="orderItem.MedicineId" class="form-control">
+                <option value="">-- Select Medicine --</option>
+                @if (Medicines != null)
+                {
+                    foreach (var medicine in Medicines)
+                    {
+                        <option value="@medicine.Id">@medicine.MedicineName</option>}
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => orderItem.MedicineId)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>OrderItem quantity: </label>
+        <div>
+            <InputDate @bind-Value="@orderItem.OrderQuantity" class="form-control" />
+            <ValidationMessage For="@(() => orderItem.OrderQuantity)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        @ButtonText
+    </button>
+    <BackToList Target="orderItems" />
+</EditForm>
+
+@code{ 
+    [Parameter] public OrderItem orderItem { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnVaildSubmit { get; set; }
+
+    private IList<Order> Orders;
+    private IList<Medicine> Medicines;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Orders = await _client.GetFromJsonAsync<List<Order>>($"{Endpoints.OrdersEndpoint}");
+        Medicines = await _client.GetFromJsonAsync<List<Medicine>>($"{Endpoints.MedicinesEndpoint}");
+    } }
