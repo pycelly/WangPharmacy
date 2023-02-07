@@ -336,6 +336,7 @@ namespace WangPharmacy.Server.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("AppointmentDateTime")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CustomerId")
@@ -361,48 +362,32 @@ namespace WangPharmacy.Server.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CustomerAddress")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerContact")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerDOB")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerEmail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerGender")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CustomerAddress = "1321123",
-                            CustomerContact = "1234123213",
-                            CustomerDOB = "123/123/123",
-                            CustomerEmail = "123@123.com",
-                            CustomerGender = "male",
-                            CustomerName = "Wpy"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CustomerAddress = "1321123",
-                            CustomerContact = "12341123213",
-                            CustomerDOB = "1213/123/123",
-                            CustomerEmail = "123@123.com1",
-                            CustomerGender = "1male",
-                            CustomerName = "Wpy1"
-                        });
                 });
 
             modelBuilder.Entity("WangPharmacy.Shared.Domain.Medicine", b =>
@@ -413,54 +398,23 @@ namespace WangPharmacy.Server.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("MedicineDescription")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MedicineName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("MedicinePrice")
                         .HasColumnType("float");
 
                     b.Property<string>("MedicineType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Medicines");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            MedicineDescription = "To treat fever",
-                            MedicineName = "panadol",
-                            MedicinePrice = 2.23,
-                            MedicineType = "general"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            MedicineDescription = "To gain muscle",
-                            MedicineName = "protein",
-                            MedicinePrice = 223.22999999999999,
-                            MedicineType = "gym"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            MedicineDescription = "To gain muscle",
-                            MedicineName = "protein1",
-                            MedicinePrice = 223.22999999999999,
-                            MedicineType = "gym"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            MedicineDescription = "To g2ain muscle",
-                            MedicineName = "protei1n1",
-                            MedicinePrice = 2223.23,
-                            MedicineType = "gy1m"
-                        });
                 });
 
             modelBuilder.Entity("WangPharmacy.Shared.Domain.Order", b =>
@@ -522,9 +476,11 @@ namespace WangPharmacy.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PrescriptionDescription")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PrescriptionName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -572,38 +528,24 @@ namespace WangPharmacy.Server.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("StaffContact")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StaffEmail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StaffGender")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StaffName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Staffs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            StaffContact = "12312",
-                            StaffEmail = "123@123.com",
-                            StaffGender = "male",
-                            StaffName = "tr"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            StaffContact = "2131232",
-                            StaffEmail = "1213@123.com",
-                            StaffGender = "male",
-                            StaffName = "tr1"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

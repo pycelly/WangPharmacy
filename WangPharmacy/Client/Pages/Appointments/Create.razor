@@ -6,55 +6,7 @@
 <hr />
 <br />
 
-<EditForm Model="@appointment" OnValidSubmit="CreateAppointment">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label>Customer: </label>
-        <div>
-            <InputSelect @bind-Value="appointment.CustomerId" class="form-control">
-                <option value="">-- Select Customer --</option>
-                @if (Customers != null)
-                {
-                    foreach (var customer in Customers)
-                    {
-<option value="@customer.Id">@customer.CustomerName</option>}
-}
-            </InputSelect>
-            <ValidationMessage For="@(() => appointment.CustomerId)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Staff: </label>
-        <div>
-            <InputSelect @bind-Value="appointment.StaffId" class="form-control">
-                <option value="">-- Select Staff --</option>
-                @if (Staffs != null)
-                {
-                    foreach (var staff in Staffs)
-                    {
-<option value="@staff.Id">@staff.StaffName</option>}
-}
-            </InputSelect>
-            <ValidationMessage For="@(() => appointment.StaffId)" />
-        </div>
-    </div>
-    <div class="form-group">
-        <label>Appointment Date Time: </label>
-        <div>
-            <InputDate @bind-Value="@appointment.AppointmentDateTime" class="form-control" />
-            <ValidationMessage For="@(() => appointment.AppointmentDateTime)" />
-        </div>
-    </div>
-
-
-
-    <button type="submit" class="btn btn-success btn-block">
-        Create Appointment
-    </button>
-</EditForm>
+<FormComponent ButtonText="Create Appointment" appointment="appointment" OnVaildSubmit="@CreateAppointment" />
 
 @code { Appointment appointment = new Appointment();
 

@@ -6,46 +6,7 @@
 <hr />
 <br />
 
-<EditForm Model="@medicine" OnValidSubmit="CreateMedicine">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label>Medicine Name: </label>
-        <div>
-            <InputText @bind-Value="@medicine.MedicineName" class="form-control" />
-            <ValidationMessage For="@(() => medicine.MedicineName)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Medicine Type: </label>
-        <div>
-            <InputText @bind-Value="@medicine.MedicineType" class="form-control" />
-            <ValidationMessage For="@(() => medicine.MedicineType)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Medicine Descrpition: </label>
-        <div>
-            <InputText @bind-Value="@medicine.MedicineDescription" class="form-control" />
-            <ValidationMessage For="@(() => medicine.MedicineDescription)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Medicine price: </label>
-        <div>
-            <InputNumber @bind-Value="@medicine.MedicinePrice" class="form-control" />
-            <ValidationMessage For="@(() => medicine.MedicinePrice)" />
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-success btn-block">
-        Create Medicine
-    </button>
-</EditForm>
+<FormComponent ButtonText="Create Medicine" medicine="medicine" OnVaildSubmit="@CreateMedicine" />
 
 @code { Medicine medicine = new Medicine();
 

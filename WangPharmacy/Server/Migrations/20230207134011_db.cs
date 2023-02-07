@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WangPharmacy.Server.Migrations
 {
-    public partial class newdb1 : Migration
+    public partial class db : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,12 +54,12 @@ namespace WangPharmacy.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerGender = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerContact = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerDOB = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerEmail = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerGender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerContact = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerDOB = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerEmail = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,9 +91,9 @@ namespace WangPharmacy.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MedicineName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MedicineType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MedicineDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MedicineName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MedicineType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MedicineDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MedicinePrice = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
@@ -127,10 +127,10 @@ namespace WangPharmacy.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StaffName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StaffGender = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StaffContact = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StaffEmail = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    StaffName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StaffGender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StaffContact = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StaffEmail = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -324,8 +324,8 @@ namespace WangPharmacy.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PrescriptionName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PrescriptionDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PrescriptionName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PrescriptionDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AppointmentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -371,25 +371,6 @@ namespace WangPharmacy.Server.Migrations
                         principalTable: "Prescriptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "Medicines",
-                columns: new[] { "Id", "MedicineDescription", "MedicineName", "MedicinePrice", "MedicineType" },
-                values: new object[,]
-                {
-                    { 1, "To treat fever", "panadol", 2.23, "general" },
-                    { 2, "To gain muscle", "protein", 223.22999999999999, "gym" },
-                    { 3, "To gain muscle", "protein1", 223.22999999999999, "gym" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Staffs",
-                columns: new[] { "Id", "StaffContact", "StaffEmail", "StaffGender", "StaffName" },
-                values: new object[,]
-                {
-                    { 1, "12312", "123@123.com", "male", "tr" },
-                    { 2, "2131232", "1213@123.com", "male", "tr1" }
                 });
 
             migrationBuilder.CreateIndex(

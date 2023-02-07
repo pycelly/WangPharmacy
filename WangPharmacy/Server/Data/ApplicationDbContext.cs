@@ -34,9 +34,7 @@ namespace WangPharmacy.Server.Data
         {
             base.OnModelCreating(builder);
 
-            builder.ApplyConfiguration(new MedicineSeedConfiguration());
-            builder.ApplyConfiguration(new StaffSeedConfiguration());
-            builder.ApplyConfiguration(new CustomerSeedConfiguration());
+          
 
         }
 

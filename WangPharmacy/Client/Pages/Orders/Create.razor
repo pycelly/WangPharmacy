@@ -6,46 +6,7 @@
 <hr />
 <br />
 
-<EditForm Model="@order" OnValidSubmit="CreateOrder">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label>Customer: </label>
-        <div>
-            <InputSelect @bind-Value="order.CustomerId" class="form-control">
-                <option value="">-- Select Customer --</option>
-                @if (Customers != null)
-                {
-                    foreach (var customer in Customers)
-                    {
-                        <option value="@customer.Id">@customer.CustomerName</option>}
-                    }
-            </InputSelect>
-            <ValidationMessage For="@(() => order.CustomerId)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Order date: </label>
-        <div>
-            <InputDate @bind-Value="@order.OrderDateTime" class="form-control" />
-            <ValidationMessage For="@(() => order.OrderDateTime)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Order Payment: </label>
-        <div>
-            <InputNumber @bind-Value="@order.OrderPayment" class="form-control" />
-            <ValidationMessage For="@(() => order.OrderPayment)" />
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-success btn-block">
-        Create Order
-    </button>
-</EditForm>
+<FormComponent ButtonText="Create Order" order="order" OnVaildSubmit="@CreateOrder" />
 
 @code { Order order = new Order();
 

@@ -4,52 +4,55 @@
 <EditForm Model="@orderItem" OnValidSubmit="@OnVaildSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-
-    <div class="form-group">
-        <label>Order: </label>
-        <div>
-            <InputSelect @bind-Value="orderItem.OrderId" class="form-control">
-                <option value="">-- Select Order --</option>
-                @if (Orders != null)
-                {
-                    foreach (var order in Orders)
+    <fieldset disabled="@Disabled">
+        <div class="form-group">
+            <label>Order: </label>
+            <div>
+                <InputSelect @bind-Value="orderItem.OrderId" class="form-control">
+                    <option value="">-- Select Order --</option>
+                    @if (Orders != null)
                     {
-                        <option value="@order.Id">@order.Id</option>}
-                }
-            </InputSelect>
-            <ValidationMessage For="@(() => orderItem.OrderId)" />
+                        foreach (var order in Orders)
+                        {
+                            <option value="@order.Id">@order.Id</option>}
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => orderItem.OrderId)" />
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label>Medicine: </label>
-        <div>
-            <InputSelect @bind-Value="orderItem.MedicineId" class="form-control">
-                <option value="">-- Select Medicine --</option>
-                @if (Medicines != null)
-                {
-                    foreach (var medicine in Medicines)
+        <div class="form-group">
+            <label>Medicine: </label>
+            <div>
+                <InputSelect @bind-Value="orderItem.MedicineId" class="form-control">
+                    <option value="">-- Select Medicine --</option>
+                    @if (Medicines != null)
                     {
-                        <option value="@medicine.Id">@medicine.MedicineName</option>}
-                }
-            </InputSelect>
-            <ValidationMessage For="@(() => orderItem.MedicineId)" />
+                        foreach (var medicine in Medicines)
+                        {
+                            <option value="@medicine.Id">@medicine.MedicineName</option>}
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => orderItem.MedicineId)" />
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label>OrderItem quantity: </label>
-        <div>
-            <InputDate @bind-Value="@orderItem.OrderQuantity" class="form-control" />
-            <ValidationMessage For="@(() => orderItem.OrderQuantity)" />
+        <div class="form-group">
+            <label>OrderItem quantity: </label>
+            <div>
+                <InputNumber @bind-Value="@orderItem.OrderQuantity" class="form-control" />
+                <ValidationMessage For="@(() => orderItem.OrderQuantity)" />
+            </div>
         </div>
-    </div>
-
-    <button type="submit" class="btn btn-success btn-block">
-        @ButtonText
-    </button>
-    <BackToList Target="orderItems" />
+    </fieldset>
+        @if (!Disabled)
+        {
+            <button type="submit" class="btn btn-success btn-block">
+                @ButtonText
+            </button>}
+        <BackToList Target="orderItems" />
 </EditForm>
 
 @code{ 
+    [Parameter] public bool Disabled { get; set; } = false;
     [Parameter] public OrderItem orderItem { get; set; }
     [Parameter] public string ButtonText { get; set; } = "Save";
     [Parameter] public EventCallback OnVaildSubmit { get; set; }

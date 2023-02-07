@@ -6,54 +6,7 @@
 <hr />
 <br />
 
-<EditForm Model="@prescriptionItem" OnValidSubmit="CreatePrescriptionItem">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label>Medicine: </label>
-        <div>
-            <InputSelect @bind-Value="prescriptionItem.MedicineId" class="form-control">
-                <option value="">-- Select Medicines --</option>
-                @if (Medicines != null)
-                {
-                    foreach (var medicine in Medicines)
-                    {
-<option value="@medicine.Id">@medicine.Id</option>}
-}
-            </InputSelect>
-            <ValidationMessage For="@(() => prescriptionItem.MedicineId)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Prescription: </label>
-        <div>
-            <InputSelect @bind-Value="prescriptionItem.PrescriptionId" class="form-control">
-                <option value="">-- Select Presciprtion --</option>
-                @if (Prescriptions != null)
-                {
-                    foreach (var prescription in Prescriptions)
-                    {
-<option value="@prescription.Id">@prescription.Id</option>}
-}
-            </InputSelect>
-            <ValidationMessage For="@(() => prescriptionItem.MedicineId)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>prescription qty: </label>
-        <div>
-            <InputNumber @bind-Value="@prescriptionItem.PrescriptionQuantity" class="form-control" />
-            <ValidationMessage For="@(() => prescriptionItem.PrescriptionQuantity)" />
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-success btn-block">
-        Create prescriptionItem
-    </button>
-</EditForm>
+<FormComponent ButtonText="Create PrescriptionItem" prescriptionItem="prescriptionItem" OnVaildSubmit="@CreatePrescriptionItem" />
 
 @code { PrescriptionItem prescriptionItem = new PrescriptionItem();
 
