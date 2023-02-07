@@ -2,7 +2,8 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
-
+@inject HttpInterceptorService _interceptor 
+@implements IDisposable
 <h3 class=" card-title">Medicines</h3>
 <a href="/medicines/create" class="btn btn-secondary">
     <span class="oi oi-plus"></span>
@@ -49,6 +50,7 @@
     private List<Medicine> Medicines;
     protected async override  Task OnInitializedAsync()
     {
+        _interceptor.MonitorEvent();
         Medicines = await _client.GetFromJsonAsync<List<Medicine>>($"{Endpoints.MedicinesEndpoint}");
     }
 
@@ -61,5 +63,9 @@
             await _client.DeleteAsync($"{Endpoints.MedicinesEndpoint}/{medicineId}");
             await OnInitializedAsync();
         }
+    }
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
     }
 }
