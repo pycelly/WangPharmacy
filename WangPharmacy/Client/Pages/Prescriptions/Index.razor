@@ -2,6 +2,8 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
 <h3 class=" card-title">Prescriptions</h3>
 <a href="/prescriptions/create" class="btn btn-secondary">
@@ -16,34 +18,35 @@
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table-responsive"id="prescriptionsTable">
         <thead>
             <tr>
                 <th>Prescription Id</th>
                 <th>Prescription Description</th>
-                <th>Appointment</th>
+                <th>Appointment Id</th>
+                
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var prescription in Prescriptions)
             {
-                <tr>
-                    <td>@prescription.Id</td>
-                    <td>@prescription.PrescriptionDescription</td>
-                    <td>@prescription.Appointment.Id</td>
-                    <td>
-                        <a href="/Prescriptions/view/@prescription.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/Prescriptions/edit/@prescription.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(() =>Delete(prescription.Id))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-                </tr>
+            <tr>
+                <td>@prescription.Id</td>
+                <td>@prescription.PrescriptionDescription</td>
+                <td>@prescription.Appointment.Id</td>
+                <td>
+                    <a href="/Prescriptions/view/@prescription.Id" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                    <a href="/Prescriptions/edit/@prescription.Id" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
+                    <button class="btn btn-danger" @onclick="@(() =>Delete(prescription.Id))">
+                        <span class="oi oi-delete"></span>
+                    </button>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
@@ -66,4 +69,14 @@ else
             await OnInitializedAsync();
         }
     }
-}
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#prescriptionsTable");
+    }
+
+
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
+        js.InvokeVoidAsync("DataTablesDispose", "#prescriptionsTable");
+    } }

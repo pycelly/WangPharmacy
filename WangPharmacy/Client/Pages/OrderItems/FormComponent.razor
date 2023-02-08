@@ -14,7 +14,7 @@
                     {
                         foreach (var order in Orders)
                         {
-                            <option value="@order.Id">@order.Id</option>}
+                            <option value="@order.Id">@order.Id,@order.Customer.CustomerName</option>}
                     }
                 </InputSelect>
                 <ValidationMessage For="@(() => orderItem.OrderId)" />

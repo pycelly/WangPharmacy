@@ -2,6 +2,8 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
 <h3 class=" card-title">Staffs</h3>
 <a href="/staffs/create" class="btn btn-secondary">
@@ -16,30 +18,36 @@
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="staffsTable">
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Email Address</th>
+                <th>Contact</th>
+                <th>Gender</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var staff in Staffs)
             {
-                <tr>
-                    <td>@staff.StaffName</td>
-                    <td>
-                        <a href="/staffs/view/@staff.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/staffs/edit/@staff.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(() =>Delete(staff.Id))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-                </tr>
+            <tr>
+                <td>@staff.StaffName</td>
+                <td>@staff.StaffEmail</td>
+                <td>@staff.StaffContact</td>
+                <td>@staff.StaffGender</td>
+                <td>
+                    <a href="/staffs/view/@staff.Id" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                    <a href="/staffs/edit/@staff.Id" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
+                    <button class="btn btn-danger" @onclick="@(() =>Delete(staff.Id))">
+                        <span class="oi oi-delete"></span>
+                    </button>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
@@ -49,6 +57,7 @@ else
     private List<Staff> Staffs;
     protected async override Task OnInitializedAsync()
     {
+        _interceptor.MonitorEvent();
         Staffs = await _client.GetFromJsonAsync<List<Staff>>($"{Endpoints.StaffsEndpoint}");
     }
 
@@ -61,5 +70,17 @@ else
             await _client.DeleteAsync($"{Endpoints.StaffsEndpoint}/{staffId}");
             await OnInitializedAsync();
         }
+
     }
-}
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#staffsTable");
+    }
+
+
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
+        js.InvokeVoidAsync("DataTablesDispose", "#staffsTable");
+    } }
+

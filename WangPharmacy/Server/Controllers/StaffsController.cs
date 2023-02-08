@@ -26,7 +26,7 @@ namespace WangPharmacy.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetStaffs()
         {
-            
+            //return NotFound();
             var staffs = await _unitofwork.Staffs.GetAll();
             return Ok(staffs);
         }

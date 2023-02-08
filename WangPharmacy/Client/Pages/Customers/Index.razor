@@ -3,6 +3,7 @@
 @inject IJSRuntime js
 @attribute [Authorize]
 
+
 <h3 class="card-title">Customers</h3>
 <a href="/customers/create" class="btn btn-secondary">
     <span class="oi oi-plus"></span>
@@ -20,26 +21,35 @@ else
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Address</th>
+                <th>Date of Birth</th>
+                <th>contact</th>
+                <th>gender</th>
+                <th>email</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var customer in Customers)
             {
-                <tr>
-                    <td>@customer.CustomerName</td>
-                    <td>
-                        <a href="/customers/view/@customer.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/customers/edit/@customer.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(() =>Delete(customer.Id))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-                </tr>
+            <tr>
+                <td>@customer.CustomerName</td>
+                <td>@customer.CustomerAddress</td>
+                <td>@customer.CustomerDOB</td>
+                <td>@customer.CustomerGender</td>
+                <td>@customer.CustomerEmail</td>
+                <td>
+                    <a href="/customers/view/@customer.Id" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                    <a href="/customers/edit/@customer.Id" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
+                    <button class="btn btn-danger" @onclick="@(() =>Delete(customer.Id))">
+                        <span class="oi oi-delete"></span>
+                    </button>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

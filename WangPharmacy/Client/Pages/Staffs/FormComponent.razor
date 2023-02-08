@@ -29,7 +29,11 @@
         <div class="form-group">
             <label>Staff gender: </label>
             <div>
-                <InputText @bind-Value="@staff.StaffGender" class="form-control" />
+                <InputSelect @bind-Value="staff.StaffGender" class="form-control">
+                    <option value="">-- Select Gender --</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </InputSelect>
                 <ValidationMessage For="@(() => staff.StaffGender)" />
             </div>
         </div>

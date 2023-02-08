@@ -1,4 +1,10 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">WangPharmacy</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -11,31 +17,57 @@
             <Authorized>
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="authentication/profile" Match="NavLinkMatch.All">
-                        <span class="oi oi-person" aria-hidden="true"></span> Hello, @context.User.Identity.Name!
+                        <span class="oi oi-person" aria-hidden="true"></span>Hello, @context.User.Identity.Name!
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="authentication/logout" Match="NavLinkMatch.All">
-                        <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
-                    </NavLink>
+
+                    <NavLink class="nav-link" href="#" @onclick="BeginSignOut" Match="NavLinkMatch.All">
+                        <span class="oi oi-account-logout" aria-hidden="true"></span> Log out
+                    </NavLink>.
                 </li>
             </Authorized>
             <NotAuthorized>
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="authentication/register" Match="NavLinkMatch.All">
-                        <span class="oi oi-person" aria-hidden="true"></span> Register
+                        <span class="oi oi-person" aria-hidden="true"></span>Register
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="authentication/login" Match="NavLinkMatch.All">
-                        <span class="oi oi-account-login" aria-hidden="true"></span> Login
+                        <span class="oi oi-account-login" aria-hidden="true"></span>Log in
                     </NavLink>
                 </li>
             </NotAuthorized>
         </AuthorizeView>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="accounts/">
+                <span class="oi oi-people" aria-hidden="true"></span> Accounts
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="staffs">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Staffs
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="appointments">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Appointments
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="prescriptions">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Prescriptions
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="prescriptionItems">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> PrescriptionItems
             </NavLink>
         </li>
         <li class="nav-item px-3">
@@ -43,38 +75,21 @@
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Medicines
             </NavLink>
         </li>
+
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="staffs" Match="NavLinkMatch.All">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Staffs
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="customers" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="customers">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Customers
             </NavLink>
         </li>
+
+
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="appointments" Match="NavLinkMatch.All">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Appointments
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="prescriptions" Match="NavLinkMatch.All">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Prescriptions
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="prescriptionItems" Match="NavLinkMatch.All">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> PrescriptionItems
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="orders" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="orders">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Orders
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="orderItems" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="orderItems">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> orderItems
             </NavLink>
         </li>
@@ -82,13 +97,17 @@
     </ul>
 </div>
 
-@code {
-    private bool collapseNavMenu = true;
+@code { private bool collapseNavMenu = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+            private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
+            private void ToggleNavMenu()
+            {
+                collapseNavMenu = !collapseNavMenu;
+            }
+
+            private async Task BeginSignOut(MouseEventArgs args)
+            {
+                await SignOutManager.SetSignOutState();
+                Navigation.NavigateTo("authentication/logout");
+            } }

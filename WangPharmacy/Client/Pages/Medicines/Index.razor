@@ -2,8 +2,7 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
-@inject HttpInterceptorService _interceptor 
-@implements IDisposable
+
 <h3 class=" card-title">Medicines</h3>
 <a href="/medicines/create" class="btn btn-secondary">
     <span class="oi oi-plus"></span>
@@ -21,26 +20,32 @@
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Type</th>
+                            <th>Descrpition</th>
+                            <th>price</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var medicine in Medicines)
                 {
-                    <tr>
-                        <td>@medicine.MedicineName</td>
-                        <td>
-                            <a href="/medicines/view/@medicine.Id" class="btn btn-primary">
-                                <span class="oi oi-book"></span>
-                            </a>
-                            <a href="/medicines/edit/@medicine.Id" class="btn btn-warning">
-                                <span class="oi oi-pencil"></span>
-                            </a>
-                            <button class="btn btn-danger" @onclick="@(() =>Delete(medicine.Id))">
-                                <span class="oi oi-delete"></span>
-                            </button>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>@medicine.MedicineName</td>
+                            <td>@medicine.MedicineType</td>
+                            <td>@medicine.MedicineDescription</td>
+                            <td>@medicine.MedicinePrice</td>
+                            <td>
+                                <a href="/medicines/view/@medicine.Id" class="btn btn-primary">
+                                    <span class="oi oi-book"></span>
+                                </a>
+                                <a href="/medicines/edit/@medicine.Id" class="btn btn-warning">
+                                    <span class="oi oi-pencil"></span>
+                                </a>
+                                <button class="btn btn-danger" @onclick="@(() =>Delete(medicine.Id))">
+                                    <span class="oi oi-delete"></span>
+                                </button>
+                            </td>
+                        </tr>
                 }
                     </tbody>
                 </table>
@@ -50,7 +55,7 @@
     private List<Medicine> Medicines;
     protected async override  Task OnInitializedAsync()
     {
-        _interceptor.MonitorEvent();
+        
         Medicines = await _client.GetFromJsonAsync<List<Medicine>>($"{Endpoints.MedicinesEndpoint}");
     }
 
@@ -64,8 +69,5 @@
             await OnInitializedAsync();
         }
     }
-    public void Dispose()
-    {
-        _interceptor.DisposeEvent();
-    }
+    
 }

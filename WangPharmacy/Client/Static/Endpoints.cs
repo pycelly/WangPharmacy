@@ -17,5 +17,6 @@ namespace WangPharmacy.Client.Static
         public static readonly string PrescriptionItemsEndpoint = $"{Prefix}/prescriptionItems";
         public static readonly string PrescriptionsEndpoint = $"{Prefix}/prescriptions";
         public static readonly string StaffsEndpoint = $"{Prefix}/staffs";
+        public static readonly string AccountsEndpoint = $"{Prefix}/accounts";
     }
 }

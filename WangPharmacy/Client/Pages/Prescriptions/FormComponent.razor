@@ -13,22 +13,22 @@
                     {
                         foreach (var appointment in Appointments)
                         {
-<option value="@appointment.Id">@appointment.Id</option>}
-}
+                        <option value="@appointment.Id">@appointment.Id,@appointment.Customer.CustomerName</option>}
+                        }
                 </InputSelect>
                 <ValidationMessage For="@(() => prescription.AppointmentId)" />
             </div>
         </div>
 
         <div class="form-group">
-            <label>prescription Name: </label>
+            <label>Prescription Name: </label>
             <div>
                 <InputText @bind-Value="@prescription.PrescriptionName" class="form-control" />
                 <ValidationMessage For="@(() => prescription.PrescriptionName)" />
             </div>
         </div>
         <div class="form-group">
-            <label>prescription Description: </label>
+            <label>Prescription Description: </label>
             <div>
                 <InputText @bind-Value="@prescription.PrescriptionDescription" class="form-control" />
                 <ValidationMessage For="@(() => prescription.PrescriptionDescription)" />

@@ -27,8 +27,7 @@ namespace WangPharmacy.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMedicines()
         {
-            // To be deleted after testing global error handling
-            //return NotFound();
+            
             var medicines = await _unitofwork.Medicines.GetAll();
             return Ok(medicines);
         }

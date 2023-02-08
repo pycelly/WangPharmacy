@@ -19,28 +19,34 @@ else
     <table class="table table-responsive">
         <thead>
             <tr>
-                <th>Order Id</th>            
+                <th>Order Id</th>
+                <th>Customer</th>
+                <th>Order Date</th>
+                <th>Order Payment</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var order in Orders)
             {
-                <tr>
-                    <td>@order.Id</td>
-                    
-                    <td>
-                        <a href="/Orders/view/@order.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/Orders/edit/@order.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(() =>Delete(order.Id))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-                </tr>
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.Customer.CustomerName</td>
+                <td>@order.OrderDateTime.Date.ToString("dd MMMM yyyy")</td>
+                <td>@order.OrderPayment</td>
+
+                <td>
+                    <a href="/Orders/view/@order.Id" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                    <a href="/Orders/edit/@order.Id" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
+                    <button class="btn btn-danger" @onclick="@(() =>Delete(order.Id))">
+                        <span class="oi oi-delete"></span>
+                    </button>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

@@ -5,7 +5,7 @@
     <ValidationSummary />
     <fieldset disabled="@Disabled">
         <div class="form-group">
-            <label>Medicine: </label>
+            <label>Medicine:</label>
             <div>
                 <InputSelect @bind-Value="prescriptionItem.MedicineId" class="form-control">
                     <option value="">-- Select Medicines --</option>
@@ -13,7 +13,7 @@
                     {
                         foreach (var medicine in Medicines)
                         {
-                            <option value="@medicine.Id">@medicine.Id</option>}
+                            <option value="@medicine.Id">@medicine.MedicineName</option>}
                     }
                 </InputSelect>
                 <ValidationMessage For="@(() => prescriptionItem.MedicineId)" />
@@ -29,15 +29,15 @@
                     {
                         foreach (var prescription in Prescriptions)
                         {
-                            <option value="@prescription.Id">@prescription.Id</option>}
+                <option value="@prescription.Id">@prescription.Id,@prescription.PrescriptionDescription</option>}
                     }
                 </InputSelect>
-                <ValidationMessage For="@(() => prescriptionItem.MedicineId)" />
+                <ValidationMessage For="@(() => prescriptionItem.PrescriptionId)" />
             </div>
         </div>
 
         <div class="form-group">
-            <label>prescription qty: </label>
+            <label>prescription Quantity: </label>
             <div>
                 <InputNumber @bind-Value="@prescriptionItem.PrescriptionQuantity" class="form-control" />
                 <ValidationMessage For="@(() => prescriptionItem.PrescriptionQuantity)" />

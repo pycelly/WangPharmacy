@@ -1,7 +1,101 @@
 ﻿@page "/"
+<head>
+    <title>Wang Pharmacy - Your Trusted Healthcare Partner</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-<h1>Hello, py!</h1>
+        body {
+            background-color: #FEFEFE;
+            font-family: Arial, sans-serif;
+        }
 
-Welcome to your new app.
+        .header {
+            background-color: #37A861;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+            .header h1 {
+                margin: 0;
+                font-size: 36px;
+            }
+
+            .header nav {
+                display: flex;
+            }
+
+                .header nav ul {
+                    display: flex;
+                    list-style: none;
+                }
+
+                    .header nav ul li a {
+                        color: white;
+                        text-decoration: none;
+                        margin-right: 20px;
+                        font-size: 20px;
+                    }
+
+                        .header nav ul li a:hover {
+                            color: #ccc;
+                        }
+
+        .main {
+            max-width: 800px;
+            margin: 40px auto;
+            text-align: center;
+        }
+
+            .main h2 {
+                font-size: 36px;
+                margin-bottom: 40px;
+            }
+
+            .main p {
+                font-size: 18px;
+                line-height: 1.5;
+                margin-bottom: 40px;
+            }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+            .footer p {
+                margin: 0;
+                font-size: 14px;
+            }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Wang Pharmacy</h1>
+        <nav>
+            <ul>
+                <li><a>Prescription Services</a></li>
+                <li><a>Over-the-Counter Products</a></li>
+                <li><a>Medical Supplies</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="main">
+        <section id="prescription-services">
+            <h2>Prescription Services</h2>
+            <p>At Wang Pharmacy, we understand the importance of access to safe and effective medications. That's why we offer a wide range of prescription services.Our pharmacists are always available to answer any questions you may have about your medications and provide guidance on managing side effects and drug interactions.</p>
+        </section>
+        <section id="otc-products">
+            <h2>Over-the-Counter Products</h2>
+            <p>We carry a variety of over-the-counter products to help you stay healthy</p>
+        </section>
+    </div>
+    </body>

@@ -6,7 +6,7 @@
 <h3 class=" card-title">OrderItems</h3>
 <a href="/orderItems/create" class="btn btn-secondary">
     <span class="oi oi-plus"></span>
-    Create New
+    Create New Order Item
 </a>
 <br />
 <br />
@@ -20,31 +20,33 @@ else
         <thead>
             <tr>
                 <th>OrderItem Id</th>
-                <th>OrderItem Quantity</th>
                 <th>Order Id</th>
                 <th>Medicine Name</th>
+                <th>OrderItem Quantity</th>
+
+
             </tr>
         </thead>
         <tbody>
             @foreach (var orderItem in OrderItems)
             {
-                <tr>
-                    <td>@orderItem.Id</td>
-                    <td>@orderItem.OrderQuantity</td>
-                    <td>@orderItem.Order.Id</td>
-                    <td>@orderItem.Medicine.MedicineName</td>
-                    <td>
-                        <a href="/OrderItems/view/@orderItem.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/OrderItems/edit/@orderItem.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(() =>Delete(orderItem.Id))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-                </tr>
+            <tr>
+                <td>@orderItem.Id</td>
+                <td>@orderItem.Order.Id</td>
+                <td>@orderItem.Medicine.MedicineName</td>
+                <td>@orderItem.OrderQuantity</td>
+                <td>
+                    <a href="/OrderItems/view/@orderItem.Id" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                    <a href="/OrderItems/edit/@orderItem.Id" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
+                    <button class="btn btn-danger" @onclick="@(() =>Delete(orderItem.Id))">
+                        <span class="oi oi-delete"></span>
+                    </button>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
